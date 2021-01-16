@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import ImgUpl from './components/Image-upload/ImgUpl'
-import UseCamera from './components/Camera/Camera'
+import CameraForm from './components/Camera/CameraForm'
 import {Todo} from './components/InputForm/Todo';
 import {Show} from './components/EditDelete/Show';
 import {
@@ -17,7 +17,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/'>
-            <UseCamera/>
+            <CameraForm/>
             <ImgUpl/>
             <Todo/>
           </Route>

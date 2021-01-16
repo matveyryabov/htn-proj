@@ -1,10 +1,29 @@
-from flask import (Flask, request, render_template, json, jsonify)
+from flask import (Flask, request, render_template, json, jsonify, url_for, session)
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS,cross_origin
+from flask_restful import Resource, Api
+import os
+from werkzeug.utils import secure_filename
+import logging
+from PIL import Image
+
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger('HELLO WORLD')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
 db = SQLAlchemy(app)
+api = Api(app)
+
+UPLOAD_FOLDER = './images'
+UPLOAD_FOLDERCAM = './cameraimg'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'rgba'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -58,20 +77,38 @@ def delete(id):
     Todo.query.filter_by(id=request_data['id']).delete()
     db.session.commit()
 
-@app.route('/api/upload', methods=['POST'])
-def handle_form():
-    files = request.files
-    file = files.get('file')
-    """
-      CODE TO HANDLE FILE
-    """
-    return jsonify({
-        'success': True,
-        'file': 'Received'
-    })
 
+
+@app.route('/upload', methods=['POST'])
+@cross_origin()
+def fileUpload():
+    target=os.path.join(UPLOAD_FOLDER,'')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    logger.info("welcome to upload`")
+    file = request.files['file'] 
+    filename = secure_filename(file.filename)
+    destination="/".join([target, filename])
+    file.save(destination)
+    session['uploadFilePath']=destination
+    response="Upload successfully"
+    return response
+
+@app.route('/uploadcam', methods=['POST'])
+@cross_origin()
+def camUpload():
+    target=os.path.join(UPLOAD_FOLDERCAM,'test_docs')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    logger.info("welcome to upload`")
+    file = request.files['file'] 
+    img = Image.open(file.stream)
+    if img.mode in ("RGBA", "P"): 
+        img = img.convert("RGB")
+    img.save('./cameraimg/imagefile.png')
+    response="Upload successfully"
+    return response
 
 if __name__ == "__main__":
+    app.secret_key = os.urandom(24)
     app.run(debug=True)
-
-

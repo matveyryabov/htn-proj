@@ -1,59 +1,64 @@
-import axios from 'axios'; 
-import React, { useState } from 'react';
-import Camera, { FACING_MODES, IMAGE_TYPES, ImagePreview } from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
- 
-function UseCamera(props) {
-  const [dataUri, setDataUri] = useState('');
+import React, { Component } from 'react';
 
-  function handleTakePhoto (dataUri) {
-    // Do stuff with the photo...
-    axios.post("http://localhost:5000/api/upload", dataUri);
-    console.log('takePhoto');
-  }
+export class CameraFeed extends Component {
+    /**
+     * Processes available devices and identifies one by the label
+     * @memberof CameraFeed
+     * @instance
+     */
+    processDevices(devices) {
+        devices.forEach(device => {
+            console.log(device.label);
+            this.setDevice(device);
+        });
+    }
 
-  function handleTakePhotoAnimationDone (dataUri) {
-    // Do stuff with the photo...
-    console.log('takePhoto');
-    setDataUri(dataUri);
-  }
- 
-  function handleCameraError (error) {
-    console.log('handleCameraError', error);
-  }
- 
-  function handleCameraStart (stream) {
-    console.log('handleCameraStart');
-  }
- 
-  function handleCameraStop () {
-    console.log('handleCameraStop');
-  }
- 
-  const isFullscreen = false;
+    /**
+     * Sets the active device and starts playing the feed
+     * @memberof CameraFeed
+     * @instance
+     */
+    async setDevice(device) {
+        const { deviceId } = device;
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { deviceId } });
+        this.videoPlayer.srcObject = stream;
+        this.videoPlayer.play();
+    }
 
-  return (
-      <div>
-        <Camera
-            onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
-            onTakePhotoAnimationDone = { (dataUri) => { handleTakePhotoAnimationDone(dataUri); } }
-            onCameraError = { (error) => { handleCameraError(error); } }
-            idealFacingMode = {FACING_MODES.ENVIRONMENT}
-            idealResolution = {{width: 640, height: 480}}
-            imageType = {IMAGE_TYPES.JPG}
-            imageCompression = {0.97}
-            isMaxResolution = {true}
-            isImageMirror = {false}
-            isSilentMode = {false}
-            isDisplayStartCameraError = {true}
-            isFullscreen = {false}
-            sizeFactor = {1}
-            onCameraStart = { (stream) => { handleCameraStart(stream); } }
-            onCameraStop = { () => { handleCameraStop(); } }
-        />
-        <img src={dataUri} width="500" height="300" />
-    </div>
-  );
+    /**
+     * On mount, grab the users connected devices and process them
+     * @memberof CameraFeed
+     * @instance
+     * @override
+     */
+    async componentDidMount() {
+        const cameras = await navigator.mediaDevices.enumerateDevices();
+        this.processDevices(cameras);
+    }
+
+    /**
+     * Handles taking a still image from the video feed on the camera
+     * @memberof CameraFeed
+     * @instance
+     */
+    takePhoto = () => {
+        const { sendFile } = this.props;
+        const context = this.canvas.getContext('2d');
+        context.drawImage(this.videoPlayer, 0, 0, 500, 450);
+        this.canvas.toBlob(sendFile);
+    };
+
+    render() {
+        return (
+            <div className="c-camera-feed">
+                <div className="c-camera-feed__viewer">
+                    <video ref={ref => (this.videoPlayer = ref)} width="680" heigh="360" />
+                </div>
+                <button onClick={this.takePhoto}>Take photo!</button>
+                <div className="c-camera-feed__stage">
+                    <canvas width="680" height="360" ref={ref => (this.canvas = ref)} />
+                </div>
+            </div>
+        );
+    }
 }
- 
-export default UseCamera;
