@@ -1,29 +1,46 @@
 #:kivy 2.0.0
 <MenuScreen>:
     BoxLayout:
+        orientation: 'vertical'
         Button:
             text: 'Query'
-            on_press: root.manager.current = 'query'
+            on_press:
+                root.manager.transition.direction = 'down'
+                root.manager.current = 'query'
         Button:
             text: 'Add Entry'
-            on_press: root.manager.current = 'add'
+            on_press:
+                root.manager.transition.direction = 'up'
+                root.manager.current = 'add'
 
 <QueryScreen>:
     BoxLayout:
-        Button:
-            text: 'My search button'
-        Button:
-            text: 'Changed my mind'
-            on_press: root.manager.current = 'menu'
+        orientation: 'vertical'
+        spacing: 20
+        BoxLayout:
+            orientation: 'vertical'
+            TextInput:
+                text: 'Hello World!'
+            Button:
+                text: 'My search button'
+                size_hint: (0.4, 0.3)
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
         Button:
             text: 'Back to menu'
-            on_press: root.manager.current = 'menu'
+            size_hint: (0.4, 0.05)
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            on_press:
+                root.manager.transition.direction = 'up'
+                root.manager.current = 'menu'
 
 
 <AddScreen>
     BoxLayout:
-        Label:
-            text:"Here we would add an entry and have a camera"
+        orientation: 'vertical'
+        Camera:
+            play: True
         Button:
             text: 'Back to menu'
-            on_press: root.manager.current = 'menu'
+            on_press:
+                root.manager.transition.direction = 'down'
+                root.manager.current = 'menu'
