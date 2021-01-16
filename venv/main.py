@@ -30,6 +30,7 @@ class AddScreen(Screen):
         camera = self.ids['camera']
         timestr = time.strftime("%Y%m%d_%H%M%S")
         camera.export_to_png("price.png".format(timestr))
+
         print("Captured")
 
     pass
@@ -37,18 +38,14 @@ class AddScreen(Screen):
 class PriceSelectionScreen(Screen):
     pass
 
+class SManager(ScreenManager):
+    pass
+
 class GroceryApp(App):
     def build(self):
-        sm = ScreenManager()
-        sm.add_widget(MenuScreen(name='menu'))
-        sm.add_widget(QueryScreen(name='query'))
-        sm.add_widget(AddScreen(name='add'))
-        sm.add_widget(PriceSelectionScreen(name='price'))
+        sm = SManager()
         return sm
 
 if __name__ == '__main__':
-    # app = MainApp()
-    # app = HBoxLayoutExample()
-    # app = ButtonPressEvent()
     app = GroceryApp()
     app.run()

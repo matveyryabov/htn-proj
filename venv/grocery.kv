@@ -8,12 +8,12 @@
             text: 'Query'
             on_press:
                 root.manager.transition.direction = 'down'
-                root.manager.current = 'query'
+                root.manager.current = 'query_s'
         Button:
             text: 'Add Entry'
             on_press:
                 root.manager.transition.direction = 'up'
-                root.manager.current = 'add'
+                root.manager.current = 'add_s'
 
 <QueryScreen>:
     BoxLayout:
@@ -33,7 +33,7 @@
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
             on_press:
                 root.manager.transition.direction = 'up'
-                root.manager.current = 'menu'
+                root.manager.current = 'menu_s'
 
 
 <AddScreen>
@@ -47,16 +47,33 @@
             on_press:
                 root.capture()
                 # This depends on the phone?
-                time.sleep(0.4)
-                root.manager.current = 'price'
+                root.manager.current = 'price_selection_s'
+                # root.manager.ids.price_selection_screen.ids.price_image.source = 'test.png'
+                root.manager.ids.price_selection_screen.ids.price_image.reload()
         Button:
             text: 'Back to menu'
             on_press:
                 root.manager.transition.direction = 'down'
-                root.manager.current = 'menu'
+                root.manager.current = 'menu_s'
 
 
 <PriceSelectionScreen>
     Image:
         id: price_image
         source: 'price.png'
+
+<SManager>
+    id: screen_manager
+    MenuScreen:
+        id: menu_screen
+        name: 'menu_s'
+    QueryScreen:
+        id: query_screen
+        name: 'query_s'
+    AddScreen:
+        id: add_screen
+        name: 'add_s'
+    PriceSelectionScreen:
+        id: price_selection_screen
+        name: 'price_selection_s'
+
