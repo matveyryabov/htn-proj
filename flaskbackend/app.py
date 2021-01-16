@@ -7,6 +7,9 @@ app = Flask(__name__)
 def my_index():
     return render_template("index.html")
 
+#uploaded route
+@app.route('/api/upload', methods = ['POST'])
+@cross_origin()
+
 if __name__ == "__main__":
     app.run(debug=True)
-    
