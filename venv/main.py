@@ -22,6 +22,19 @@ class QueryScreen(Screen):
     pass
 
 class AddScreen(Screen):
+    def capture(self):
+        '''
+        Function to capture the images and give them the names
+        according to their captured time and date.
+        '''
+        camera = self.ids['camera']
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        camera.export_to_png("price.png".format(timestr))
+        print("Captured")
+
+    pass
+
+class PriceSelectionScreen(Screen):
     pass
 
 class GroceryApp(App):
@@ -30,10 +43,12 @@ class GroceryApp(App):
         sm.add_widget(MenuScreen(name='menu'))
         sm.add_widget(QueryScreen(name='query'))
         sm.add_widget(AddScreen(name='add'))
+        sm.add_widget(PriceSelectionScreen(name='price'))
         return sm
 
 if __name__ == '__main__':
     # app = MainApp()
     # app = HBoxLayoutExample()
     # app = ButtonPressEvent()
-    GroceryApp().run()
+    app = GroceryApp()
+    app.run()

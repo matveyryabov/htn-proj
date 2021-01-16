@@ -1,4 +1,6 @@
 #:kivy 2.0.0
+#:import time time
+
 <MenuScreen>:
     BoxLayout:
         orientation: 'vertical'
@@ -38,9 +40,23 @@
     BoxLayout:
         orientation: 'vertical'
         Camera:
+            id: camera
             play: True
+        Button:
+            text: 'Capture'
+            on_press:
+                root.capture()
+                # This depends on the phone?
+                time.sleep(0.4)
+                root.manager.current = 'price'
         Button:
             text: 'Back to menu'
             on_press:
                 root.manager.transition.direction = 'down'
                 root.manager.current = 'menu'
+
+
+<PriceSelectionScreen>
+    Image:
+        id: price_image
+        source: 'price.png'
