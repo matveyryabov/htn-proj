@@ -1,0 +1,29 @@
+#:kivy 2.0.0
+<MenuScreen>:
+    BoxLayout:
+        Button:
+            text: 'Query'
+            on_press: root.manager.current = 'query'
+        Button:
+            text: 'Add Entry'
+            on_press: root.manager.current = 'add'
+
+<QueryScreen>:
+    BoxLayout:
+        Button:
+            text: 'My search button'
+        Button:
+            text: 'Changed my mind'
+            on_press: root.manager.current = 'menu'
+        Button:
+            text: 'Back to menu'
+            on_press: root.manager.current = 'menu'
+
+
+<AddScreen>
+    BoxLayout:
+        Label:
+            text:"Here we would add an entry and have a camera"
+        Button:
+            text: 'Back to menu'
+            on_press: root.manager.current = 'menu'
