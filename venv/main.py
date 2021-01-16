@@ -1,10 +1,12 @@
 import random
 import time
+import cv2
 import kivy.app
 from kivy.app import App
 import logging
 from kivy.logger import Logger
 from kivy.uix.widget import Widget
+from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -12,6 +14,8 @@ from kivy.uix.image import Image
 from kivy.uix.camera import Camera
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.graphics import Rectangle
+from kivy.graphics import Color
 
 #Logger.setLevel(logging.TRACE)
 
@@ -29,6 +33,7 @@ class AddScreen(Screen):
         '''
         camera = self.ids['camera']
         timestr = time.strftime("%Y%m%d_%H%M%S")
+#        data / data /  # package domain#.#package name#/files/app
         camera.export_to_png("price.png".format(timestr))
 
         print("Captured")
@@ -40,6 +45,23 @@ class PriceSelectionScreen(Screen):
 
 class SManager(ScreenManager):
     pass
+
+
+class Highlight(Widget):
+    def __init__(self, **kwargs):
+        super(Highlight,self).__init__(**kwargs)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            with self.canvas:
+                Color(1, 0, 0, 0.5, mode="rgba")
+                Rectangle(pos=touch.pos,size=(50,50))
+
+    def on_touch_move(self, touch):
+        if self.collide_point(*touch.pos):
+            with self.canvas:
+                Color(1, 0, 0, 0.5, mode="rgba")
+                Rectangle(pos=touch.pos,size=(50,50))
 
 class GroceryApp(App):
     def build(self):
