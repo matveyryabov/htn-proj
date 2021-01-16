@@ -51,10 +51,16 @@ def CropAndRead(path, high_lights):
 
     	output[key] = response.text_annotations
 
+    os.remove("temp.png")
     return(output)
 
-print(CropAndRead("test.png",{
-	"price": [(0,0),(690,420)],
-	"name": [(0,0),(350,220)]
-	}))
+"""
+TEST:
+thing =  CropAndRead("test.png",{
+	       "price": [(0,0),(690,420)],
+           "name": [(0,0),(350,220)]
+	       })
 
+for x in thing:
+    print(thing[x][0].description)
+"""
