@@ -97,7 +97,7 @@ def fileUpload():
 @app.route('/uploadcam', methods=['POST'])
 @cross_origin()
 def camUpload():
-    target=os.path.join(UPLOAD_FOLDERCAM,'test_docs')
+    target=os.path.join(UPLOAD_FOLDERCAM,'')
     if not os.path.isdir(target):
         os.mkdir(target)
     logger.info("welcome to upload`")
