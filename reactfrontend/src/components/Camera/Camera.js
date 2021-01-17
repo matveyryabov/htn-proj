@@ -51,10 +51,11 @@ export class CameraFeed extends Component {
     render() {
         return (
             <div className="c-camera-feed">
+                <h1>CAMERA</h1>
                 <div className="c-camera-feed__viewer">
                     <video ref={ref => (this.videoPlayer = ref)} width="680" heigh="360" />
                 </div>
-                <button onClick={this.takePhoto}>Take photo!</button>
+                <button onClick={this.takePhoto}>Upload your photo!</button>
                 <div className="c-camera-feed__stage">
                     <canvas width="680" height="360" ref={ref => (this.canvas = ref)} />
                 </div>

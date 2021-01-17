@@ -36,7 +36,6 @@ class ImgUpl extends React.Component {
         <div>
           <button>Upload</button>
         </div>
-        <img src={this.state.imageURL} alt="img" />
       </form>
     );
   }
