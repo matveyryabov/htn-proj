@@ -1,7 +1,4 @@
 #:kivy 2.0.0
-#:import time time
-#:import cv2 cv2
-
 <MenuScreen>:
     BoxLayout:
         orientation: 'vertical'
@@ -37,10 +34,11 @@
                 root.manager.current = 'menu_s'
 
 
-<AddScreen>
+<AddScreen>:
     BoxLayout:
         orientation: 'vertical'
         Camera:
+            #resolution: (800, 545)
             id: camera
             play: True
         BoxLayout:
@@ -50,48 +48,24 @@
                 text: 'Back to menu'
                 on_press:
                     root.manager.transition.direction = 'down'
-                    root.manager.current = 'menu_s'
+                    root.manager.current = 'menu'
             Button:
                 text: 'Capture'
                 on_press:
                     root.capture()
                     root.manager.transition.direction = 'left'
                     root.manager.current = 'price_selection_s'
-                    # root.manager.ids.price_selection_screen.ids.price_image.source = 'test.png'
+                    root.manager.ids.price_selection_screen.ids.price_image.source = 'price.png'
                     root.manager.ids.price_selection_screen.ids.price_image.reload()
 
-<PriceSelectionScreen>
-    BoxLayout:
-        orientation: 'vertical'
-        FloatLayout:
-            Image:
-                id: price_image
-                source: 'price.png'
-                Highlight:
-                    pos: (0, 0)
-                    size_hint: 1,1
-        BoxLayout:
-            size_hint: (1, 0.2)
-            orientation: 'horizontal'
-            TextInput:
-                id: price_field
-                size_hint: (0.7, 1)
-            Button:
-                size_hint: (0.3, 1)
-                on_press:
-                    im = cv2.imread('test.png')
-                    h, w, c = im.shape
-                    root.ids.price_field.text = str(w)
-                text: '--->'
+<PriceSelectionScreen>:
+    FloatLayout:
+        Image:
+            id: price_image
+            source:'price.png'
+            Highlight:
 
-# <ArtScreen>:
-#    FloatLayout:
-#        Image:
-#            source:'test.png'
-#            Highlight:
-#                pos: (0,0)
-#                size_hint: (1,1)
-<SManager>
+<SManager>:
     id: screen_manager
     MenuScreen:
         id: menu_screen
@@ -105,4 +79,4 @@
     PriceSelectionScreen:
         id: price_selection_screen
         name: 'price_selection_s'
-
+                
