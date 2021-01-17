@@ -20,7 +20,7 @@ class ImgUpl extends React.Component {
     data.append('file', this.uploadInput.files[0]);
     data.append('filename', this.fileName.value);
 
-    axios.post('http://localhost:5000/upload', data);
+    axios.post('https://grocerybased.herokuapp.com/upload', data);
   }
 
   render() {
