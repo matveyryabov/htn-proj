@@ -59,11 +59,16 @@
                     root.manager.ids.price_selection_screen.ids.price_image.reload()
 
 <PriceSelectionScreen>:
-    FloatLayout:
+    BoxLayout:
         Image:
+            keep_ratio: True
+            allow_stretch: True
+            pos_hint: {'top':0, 'left':0}
             id: price_image
-            source:'price.png'
             Highlight:
+                id: red_squares
+                width: self.IMAGE_WIDTH
+                height: self.IMAGE_HEIGHT
 
 <SManager>:
     id: screen_manager
